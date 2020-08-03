@@ -1,0 +1,11 @@
+FROM python:3
+
+WORKDIR /app
+
+COPY ./app_src/requirements.txt .
+
+RUN pip install -r requirements.txt
+
+VOLUME /app
+
+CMD ["dramatiq", "queue_reader", "--watch", "."]

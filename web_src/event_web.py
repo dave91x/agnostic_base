@@ -1,3 +1,6 @@
+import json
+import uuid
+import redis
 import starlette.status as status
 from json import JSONDecodeError
 from starlette.applications import Starlette
@@ -14,11 +17,20 @@ async def events(request):
     if 'secretapitoken' in headers:  # and headers['secretapitoken'] in VAULT:
         try:
             payload = await request.json()
-            print(payload)
-            # TODO process request body and push event to redis queue
+            k = uuid.uuid4().hex
+            print(k, payload)
+            # process request body and push event to redis queue
+            r = redis.Redis(host='redis', port=6379, db=0, decode_responses=True)
+            redis_resp = r.set(k, json.dumps(payload))
+            if not redis_resp:
+                raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="event_failed_to_queue")
         except JSONDecodeError:
             print('cannot_parse_request_body')
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="cannot_parse_request_body")
+        except redis.exceptions.ConnectionError:
+            print('internal_server_connection_error')
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                                detail="internal_server_connection_error")
     else:
         print('not_authorized_to_access')
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="not_authorized_to_access")
