@@ -1,3 +1,4 @@
+redis
 starlette
 uvicorn
 aiofiles
