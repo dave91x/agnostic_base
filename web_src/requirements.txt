@@ -1,5 +1,6 @@
 redis
 starlette
 uvicorn
+gunicorn
 aiofiles
 python-multipart

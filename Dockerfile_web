@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3-slim-buster
 
 WORKDIR /app
 
@@ -10,4 +10,8 @@ EXPOSE 5001
 
 VOLUME /app
 
-CMD ["uvicorn", "--host", "0.0.0.0", "--port", "5001", "--reload", "event_web:app"]
+# CMD ["uvicorn", "--host", "0.0.0.0", "--port", "5001", "--reload", "event_web:app"]
+# remove the --reload for production
+
+CMD ["gunicorn", "-b", "0.0.0.0:5001", "--reload", "-w", "2", "-k", "uvicorn.workers.UvicornWorker", "event_web:app"]
+# change the --reload to -D for production to run as a daemon
