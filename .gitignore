@@ -116,4 +116,7 @@ ENV/
 .mypy_cache/
 
 # databases
-data/
+datastore/data/
+vault/data/
+vault/logs/
+vault/policies/

@@ -1,4 +1,5 @@
 version: '3'
+
 services:
   web:
     build:
@@ -12,10 +13,14 @@ services:
     links:
       - redis
       - vault
+      - postgres
+
   redis:
     image: "redis:latest"
+    container_name: agnostic_queue
     ports:
       - "6379:6379"
+
   app:
     build:
       context: .
@@ -29,27 +34,36 @@ services:
       - redis
       - vault
       - postgres
+
   vault:
     image: vault:latest
+    container_name: agnostic_vault
     volumes:
       - ./vault/config:/vault/config
       - ./vault/policies:/vault/policies
       - ./vault/data:/vault/data
+      - ./vault/logs:/vault/logs
     ports:
       - 8200:8200
     environment:
       - VAULT_DEV_ROOT_TOKEN_ID=${VAULT_DEV_ROOT_TOKEN_ID}
       - VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200
       - VAULT_API_ADDR=http://0.0.0.0:8200
+      - VAULT_ADDR=http://0.0.0.0:8200
     cap_add:
       - IPC_LOCK
-    command: vault server -dev
+    command: vault server
+
   postgres:
     image: postgres:latest
+    container_name: agnostic_rdb
     restart: always
     ports:
       - 5432:5432
     volumes:
-      - ./data:/var/lib/postgresql/data
+      - ./datastore/conf/postgres.conf:/etc/postgresql/postgresql.conf
+      - ./datastore/data:/var/lib/postgresql/data
     environment:
+      - POSTGRES_USER=agnostic
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
