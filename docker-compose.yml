@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
   web:
@@ -16,7 +16,7 @@ services:
       - postgres
 
   redis:
-    image: "redis:latest"
+    image: redis:latest
     container_name: agnostic_queue
     ports:
       - "6379:6379"
@@ -48,13 +48,11 @@ services:
     ports:
       - 8200:8200
     environment:
-      - VAULT_DEV_ROOT_TOKEN_ID=${VAULT_DEV_ROOT_TOKEN_ID}
-      - VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200
       - VAULT_API_ADDR=http://0.0.0.0:8200
       - VAULT_ADDR=http://0.0.0.0:8200
     cap_add:
       - IPC_LOCK
-    command: vault server -dev -config=/vault/config/vault-config.json
+    command: vault server -config=/vault/config/vault-config.json
 
   postgres:
     image: postgres:latest
