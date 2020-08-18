@@ -1,13 +1,13 @@
 # Agnostic Appliance
 
-#### Disclaimer
+### Disclaimer
 * This code is currently in development.
 * **Do not use this for any production workflow!**
 
-#### Overview
+### Overview
 This appliance can be installed anywhere Docker containers will run.
 
-#### Quick Start
+### Quick Start
 * Ensure that you have Docker and Docker Compose installed on your local machine
 * Create a project directory.
 * Clone this repo into your project directory.
@@ -35,7 +35,7 @@ This appliance can be installed anywhere Docker containers will run.
 
 * The Vault and postgres data should persist at this time
 
-#### Things on the horizon
+### Things on the horizon
 * SSL cert capability for api endpoints
 * Additional authentication mechanisms
 * Dead Letter Queues (DLQ)
