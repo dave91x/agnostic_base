@@ -28,6 +28,7 @@ services:
     links:
       - redis
       - vault
+      - postgres
   vault:
     image: vault:latest
     volumes:
@@ -43,3 +44,12 @@ services:
     cap_add:
       - IPC_LOCK
     command: vault server -dev
+  postgres:
+    image: postgres:latest
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
