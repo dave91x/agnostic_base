@@ -10,8 +10,8 @@
       "path": "/vault/data"
     }
   },
-  "default_lease_ttl": "168h",
-  "max_lease_ttl": "720h",
+  "default_lease_ttl": "5m",
+  "max_lease_ttl": "1h",
   "api_addr": "http://0.0.0.0:8200",
   "ui": true
 }

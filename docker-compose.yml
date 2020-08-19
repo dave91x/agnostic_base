@@ -30,8 +30,6 @@ services:
     container_name: agnostic_app
     volumes:
       - ./app_src:/app
-    environment:
-      - VAULT_TOKEN=${VAULT_DEV_ROOT_TOKEN_ID}
     links:
       - redis
       - vault

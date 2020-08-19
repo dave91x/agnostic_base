@@ -14,7 +14,14 @@ This appliance can be installed anywhere Docker containers will run.
 * You will need to set some environment variables:
 
         export VAULT_DEV_ROOT_TOKEN_ID=<choose a nice long alphanumeric string>
+        export VAULT_ADDR=http://0.0.0.0:8200
         export POSTGRES_PASSWORD=<choose a good password>
+
+* Note that you should only set the ```VAULT_DEV_ROOT_TOKEN_ID``` if you are 
+planning to run Vault in dev mode (which is an in-memory mode, meaning you 
+have to reload your secrets every time you restart).  You would also need to put
+this in the ```docker-compose.yml``` file under the vault service environment
+section.
 
 * Build your cluster with
 
