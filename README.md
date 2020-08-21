@@ -92,7 +92,18 @@ run locally, you will have to go through the steps to initialize and unseal the 
 along with setting up the database schema.
 
 ### Mac OSX Docker Desktop "fix" for redis container
+If you are running Docker Desktop on Mac OSX, after you start Docker Desktop, but **before**
+you start your full cluster, you will want to execute the following in the terminal:
 
+    docker run -ti --privileged ubuntu /bin/bash
+
+This will drop you into a bash shell in an Ubuntu container, where you will do:
+
+    echo never | tee /sys/kernel/mm/transparent_hugepage/enabled
+    echo never | tee /sys/kernel/mm/transparent_hugepage/defrag
+    exit
+
+If you have to restart Docker Desktop (or your machine), you will need to do this again.
 
 ### Things on the horizon
 * Initial database schema
