@@ -43,7 +43,7 @@ def process_event(event):
         'object_parent_id': 0,
         'object_id': details.get('batch_id', 0),
         'notes': {
-            'conductor_event_id': event.get('id', 1),
+            'conductor_event_id': e.get('id', 1),
         },
         'status': 'failed'
     }

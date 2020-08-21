@@ -33,6 +33,7 @@ services:
       - ./app_src:/app
       - $HOME/.ssh:/root/.ssh
     environment:
+      - BASE_URL=${BASE_URL}
       - VAULT_ROLE_ID=${VAULT_ROLE_ID}
       - VAULT_SECRET_ID=${VAULT_SECRET_ID}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
