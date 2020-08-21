@@ -24,6 +24,7 @@ should now look like this:
 
         |___ datastore/
         | |___ conf/
+        | | |___ README.md
         | | |___ postgres.conf
         | |___ data/
 
@@ -60,7 +61,14 @@ should now look like this:
 planning to run Vault in dev mode (which is an in-memory mode, meaning you 
 have to reload your secrets every time you restart).  You would also need to put
 this in the ```docker-compose.yml``` file under the vault service environment
-section.
+section.  Also, if you want to run vault in dev mode, in the ```docker-compose.yml``` file,
+change the ```command``` line in the vault service from 
+
+        command: vault server -config=/vault/config/vault-config.json
+        
+    to this
+
+        command: vault server -dev
 
 * Build your cluster with
 
@@ -82,6 +90,9 @@ section.
 * The Vault and postgres data is configured to persist at this time-- but, on the first
 run locally, you will have to go through the steps to initialize and unseal the vault,
 along with setting up the database schema.
+
+### Mac OSX Docker Desktop "fix" for redis container
+
 
 ### Things on the horizon
 * Initial database schema

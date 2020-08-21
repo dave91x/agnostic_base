@@ -38,7 +38,7 @@ def process_event(event):
 
     transaction = {
         'event_name': event_name,
-        'action': 'none',
+        'action': 'process_batch',
         'user_id': userid,
         'object_parent_id': 0,
         'object_id': details.get('batch_id', 0),
