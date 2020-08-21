@@ -1,2 +1,4 @@
-requests
+awscli
+boto3
+git+ssh://git@github.com/Captricity/titanium_core.git
 dramatiq[redis, watch]

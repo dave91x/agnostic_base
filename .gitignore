@@ -120,3 +120,8 @@ datastore/data/
 vault/data/
 vault/logs/
 vault/policies/
+
+# certs folder
+!certs
+certs/*
+!certs/README.md

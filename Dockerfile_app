@@ -1,11 +1,21 @@
 FROM python:3-slim-buster
 
+WORKDIR /root
+
+RUN mkdir /root/.ssh/
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends git build-essential ssh \
+    && apt-get purge -y --auto-remove \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN touch /root/.ssh/known_hosts
+RUN ssh-keyscan -T 60 github.com >> /root/.ssh/known_hosts
+
 WORKDIR /app
-
-COPY ./app_src/requirements.txt .
-
-RUN pip install -r requirements.txt
 
 VOLUME /app
 
-CMD ["dramatiq", "queue_reader", "--watch", "."]
+VOLUME /root/.ssh
+
+CMD ["sh", "-c", "pip install -r requirements.txt && dramatiq queue_reader --watch ."]

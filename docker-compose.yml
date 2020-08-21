@@ -10,6 +10,7 @@ services:
       - "5001:5001"
     volumes:
       - ./web_src:/app
+      - ./certs:/certs
     links:
       - redis
       - vault
@@ -30,6 +31,10 @@ services:
     container_name: agnostic_app
     volumes:
       - ./app_src:/app
+      - $HOME/.ssh:/root/.ssh
+    environment:
+      - VAULT_ROLE_ID=${VAULT_ROLE_ID}
+      - VAULT_SECRET_ID=${VAULT_SECRET_ID}
     links:
       - redis
       - vault
@@ -46,8 +51,8 @@ services:
     ports:
       - 8200:8200
     environment:
-      - VAULT_API_ADDR=http://0.0.0.0:8200
-      - VAULT_ADDR=http://0.0.0.0:8200
+      - VAULT_API_ADDR=${VAULT_API_ADDR}
+      - VAULT_ADDR=${VAULT_ADDR}
     cap_add:
       - IPC_LOCK
     command: vault server -config=/vault/config/vault-config.json
