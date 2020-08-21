@@ -35,6 +35,7 @@ services:
     environment:
       - VAULT_ROLE_ID=${VAULT_ROLE_ID}
       - VAULT_SECRET_ID=${VAULT_SECRET_ID}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     links:
       - redis
       - vault

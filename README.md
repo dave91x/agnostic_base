@@ -11,6 +11,41 @@ This appliance can be installed anywhere Docker containers will run.
 * Ensure that you have Docker and Docker Compose installed on your local machine
 * Create a project directory.
 * Clone this repo into your project directory.
+* Create any of the missing "empty" directories.  Your project directory
+should now look like this:
+
+        .
+        |___ app_src/
+        | |___ queue_reader.py
+        | |___ requirements.txt
+
+        |___ certs/
+        | |___ README.md
+
+        |___ datastore/
+        | |___ conf/
+        | | |___ postgres.conf
+        | |___ data/
+
+        |____vault
+        | |___ config/
+        | | |___ vault-config.json
+        | |___ data/
+        | |___ logs/
+        | |___ policies/
+
+        |___ web_src/
+        | |___ event_web.py
+        | |___ queue_writer.py
+        | |___ requirements.txt
+
+        |___ .dockerignore
+        |___ .gitignore
+        |___ docker-compose.yml
+        |___ Dockerfile_app
+        |___ Dockerfile_web
+        |___ README.md
+
 * You will need to set some local environment variables:
 
         export VAULT_DEV_ROOT_TOKEN_ID=<choose a nice long alphanumeric string>
@@ -19,6 +54,7 @@ This appliance can be installed anywhere Docker containers will run.
         export POSTGRES_PASSWORD=<choose a good password>
         export VAULT_ROLE_ID=<established role id for accessing vault secrets>
         export VAULT_SECRET_ID=<established secret id for accessing vault secrets>
+        export BASE_URL=https://staging.captricity.com
 
 * **NOTE:**  you should only set the ```VAULT_DEV_ROOT_TOKEN_ID``` if you are
 planning to run Vault in dev mode (which is an in-memory mode, meaning you 
