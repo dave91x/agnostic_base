@@ -117,9 +117,6 @@ ENV/
 
 # databases
 datastore/data/
-vault/data/
-vault/logs/
-vault/policies/
 
 # certs folder
 !certs

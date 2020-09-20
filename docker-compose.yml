@@ -13,7 +13,6 @@ services:
       - ./certs:/certs
     links:
       - redis
-      - vault
       - postgres
 
   redis:
@@ -34,30 +33,10 @@ services:
       - $HOME/.ssh:/root/.ssh
     environment:
       - BASE_URL=${BASE_URL}
-      - VAULT_ROLE_ID=${VAULT_ROLE_ID}
-      - VAULT_SECRET_ID=${VAULT_SECRET_ID}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     links:
       - redis
-      - vault
       - postgres
-
-  vault:
-    image: vault:latest
-    container_name: agnostic_vault
-    volumes:
-      - ./vault/config:/vault/config
-      - ./vault/policies:/vault/policies
-      - ./vault/data:/vault/data
-      - ./vault/logs:/vault/logs
-    ports:
-      - 8200:8200
-    environment:
-      - VAULT_API_ADDR=${VAULT_API_ADDR}
-      - VAULT_ADDR=${VAULT_ADDR}
-    cap_add:
-      - IPC_LOCK
-    command: vault server -config=/vault/config/vault-config.json
 
   postgres:
     image: postgres:latest

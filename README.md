@@ -26,14 +26,7 @@ should now look like this:
         | |___ conf/
         | | |___ README.md
         | | |___ postgres.conf
-        | |___ data/
-
-        |____vault
-        | |___ config/
-        | | |___ vault-config.json
-        | |___ data/
-        | |___ logs/
-        | |___ policies/
+        | |___ data/   # ignored by git
 
         |___ web_src/
         | |___ event_web.py
@@ -49,26 +42,8 @@ should now look like this:
 
 * You will need to set some local environment variables:
 
-        export VAULT_DEV_ROOT_TOKEN_ID=<choose a nice long alphanumeric string>
-        export VAULT_ADDR=http://0.0.0.0:8200
-        export VAULT_API_ADDR=http://0.0.0.0:8200
         export POSTGRES_PASSWORD=<choose a good password>
-        export VAULT_ROLE_ID=<established role id for accessing vault secrets>
-        export VAULT_SECRET_ID=<established secret id for accessing vault secrets>
         export BASE_URL=https://staging.captricity.com
-
-* **NOTE:**  you should only set the ```VAULT_DEV_ROOT_TOKEN_ID``` if you are
-planning to run Vault in dev mode (which is an in-memory mode, meaning you 
-have to reload your secrets every time you restart).  You would also need to put
-this in the ```docker-compose.yml``` file under the vault service environment
-section.  Also, if you want to run vault in dev mode, in the ```docker-compose.yml``` file,
-change the ```command``` line in the vault service from 
-
-        command: vault server -config=/vault/config/vault-config.json
-        
-    to this
-
-        command: vault server -dev
 
 * Build your cluster with
 
@@ -78,18 +53,12 @@ change the ```command``` line in the vault service from
 
         docker-compose up -d
 
-* You will need to go in and create any required secrets in Vault.
- You can do this in the web UI provided by Vault:
-
-        http://localhost:8200/ui
-
 * Once you are done using your cluster, you can shut it down with
 
         docker-compose rm -sf
 
-* The Vault and postgres data is configured to persist at this time-- but, on the first
-run locally, you will have to go through the steps to initialize and unseal the vault,
-along with setting up the database schema.
+* The postgres data is configured to persist at this time-- but, on the first
+run locally, you will have to go through the steps to set up the database schema.
 
 ### Mac OSX Docker Desktop "fix" for redis container
 If you are running Docker Desktop on Mac OSX, after you start Docker Desktop, but **before**
