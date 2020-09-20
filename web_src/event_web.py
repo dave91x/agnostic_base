@@ -2,7 +2,7 @@ import redis
 from json import JSONDecodeError
 import starlette.status as status
 from starlette.routing import Route
-from queue_writer import QueueOperator
+from queue_writer import QueueWriter
 from starlette.applications import Starlette
 from starlette.responses import JSONResponse
 from starlette.exceptions import HTTPException
@@ -11,10 +11,10 @@ from starlette.exceptions import HTTPException
 async def events(request):
     headers = request.headers
     # TODO auth based on header token
-    if 'secretapitoken' in headers:  # and headers['secretapitoken'] in VAULT:
+    if 'secretapitoken' in headers:  # and headers['secretapitoken'] in POSTGRES:
         try:
             payload = await request.json()
-            redis_responses = QueueOperator().write_to_queue(payload)
+            redis_responses = QueueWriter().write_to_queue(payload)
             if not all(redis_responses):
                 raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="event_failed_to_queue")
 

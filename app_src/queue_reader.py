@@ -13,15 +13,15 @@ dramatiq.set_broker(redis_broker)
 @dramatiq.actor
 def process_event(event):
     base_url = os.environ['BASE_URL']
-    vault_role_id = os.environ['VAULT_ROLE_ID']
-    vault_secret_id = os.environ['VAULT_SECRET_ID']
+    # vault_role_id = os.environ['VAULT_ROLE_ID']
+    # vault_secret_id = os.environ['VAULT_SECRET_ID']
     logger_creds = {
-        "user": "vidado_serverless",
         "host": "postgres",
         "port": 5432,
         "database": "agnostic",
+        "user": "vidado_serverless",
         "password": os.environ['POSTGRES_PASSWORD'],
-        "use_ssl": False
+        "use_ssl": False  # ssl_context ?
     }
 
     try:
@@ -49,30 +49,30 @@ def process_event(event):
     }
 
     # request short-lived token from vault to access secrets
-    vault_token_request_url = 'http://vault:8200/v1/auth/approle/login'
-    vault_token_request_payload = {
-        'role_id': vault_role_id,
-        'secret_id': vault_secret_id
-    }
-    auth_resp = requests.post(vault_token_request_url, json=vault_token_request_payload).json()
+    # vault_token_request_url = 'http://vault:8200/v1/auth/approle/login'
+    # vault_token_request_payload = {
+    #     'role_id': vault_role_id,
+    #     'secret_id': vault_secret_id
+    # }
+    # auth_resp = requests.post(vault_token_request_url, json=vault_token_request_payload).json()
     # print(auth_resp)
-    vault_token = auth_resp['auth']['client_token']
+    # vault_token = auth_resp['auth']['client_token']
 
     # use the generated token to retrieve the customer pipeline config and database creds from vault
-    vault_url = 'http://vault:8200/v1/vidado/customer_configs/data/config_{}'.format(userid)
-    vault_headers = {'X-Vault-Token': vault_token}
+    # vault_url = 'http://vault:8200/v1/vidado/customer_configs/data/config_{}'.format(userid)
+    # vault_headers = {'X-Vault-Token': vault_token}
 
-    vault_resp = requests.get(vault_url, headers=vault_headers).json()
+    # vault_resp = requests.get(vault_url, headers=vault_headers).json()
     # print(vault_resp)
-    pipeline_config = vault_resp['data']['data']
+    # pipeline_config = vault_resp['data']['data']
 
-    if event_name == 'batch-digitized':
-        api_endpoint = '/api/v1/batch/{}'.format(details['batch_id'])
-
-        action = requests.get('{}{}'.format(base_url, api_endpoint),
-                              headers={'Captricity-API-Token': pipeline_config['customer']['shreddr_api_token']})
-
-        print(json.dumps(action.json(), indent=2))
+    # if event_name == 'batch-digitized':
+    #     api_endpoint = '/api/v1/batch/{}'.format(details['batch_id'])
+    #
+    #     action = requests.get('{}{}'.format(base_url, api_endpoint),
+    #                           headers={'Captricity-API-Token': pipeline_config['customer']['shreddr_api_token']})
+    #
+    #     print(json.dumps(action.json(), indent=2))
 
     wrap_logger(logger, transaction, status='exported', verbose=True)
 

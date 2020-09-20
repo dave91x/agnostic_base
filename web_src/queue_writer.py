@@ -4,7 +4,7 @@ import uuid
 import redis
 
 
-class QueueOperator(object):
+class QueueWriter(object):
 
     DRAMATIQ_DEFAULT_QUEUE = 'dramatiq:default'
     DRAMATIQ_DEF_MSG_QUEUE = 'dramatiq:default.msgs'
